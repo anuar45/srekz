@@ -9,7 +9,7 @@ services:
     volumes:
       - /var/lib/drone:/data
     environment:
-      DRONE_AGENTS_ENABLED: true
+      DRONE_AGENTS_ENABLED: "true"
       DRONE_GITHUB_SERVER: "https://github.com"
       DRONE_GITHUB_CLIENT_ID:
       DRONE_GITHUB_CLIENT_SECRET:
