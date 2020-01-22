@@ -6,8 +6,9 @@ services:
     restart: always
     labels:
       - "traefik.enable=true" 
-    expose:
+    ports:
       - "80"
+      - "443"
     volumes:
       - /var/lib/drone:/data
     environment:
