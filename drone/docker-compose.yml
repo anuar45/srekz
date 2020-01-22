@@ -4,6 +4,8 @@ services:
   ci:
     image: drone/drone:1
     restart: always
+    labels:
+      - "traefik.enable=true" 
     expose:
       - "80"
     volumes:
