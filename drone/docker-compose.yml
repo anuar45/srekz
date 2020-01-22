@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  ci:
+    image: drone/drone:1
+    # command: --api.insecure=true --providers.docker.exposedByDefault=false --providers.docker.defaultRule=Host(`{{.Name}}.zerg.kz`)
+    restart: always
+    ports:
+      - "80"
+    volumes:
+      - /var/lib/drone:/data
