@@ -2,3 +2,5 @@ whoami:
   image: containous/whoami
   labels:
     - "traefik.enable=true"
+  expose:
+    - "80"
