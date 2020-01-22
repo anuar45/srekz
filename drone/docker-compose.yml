@@ -4,6 +4,7 @@ services:
   ci:
     image: drone/drone:1
     restart: always
+    container_name: "ci"
     labels:
       - "traefik.enable=true" 
     ports:
