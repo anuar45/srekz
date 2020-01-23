@@ -3,8 +3,7 @@ version: '3'
 services:
   reverse-proxy:
     image: traefik:v2.0
-    command: 
-      - "--domain=zerg.kz"
+    command:
       - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedByDefault=false"
@@ -20,7 +19,7 @@ services:
     restart: always
     labels:
       - "traefik.enable=true"
-      - "traefik.frontend.rule=ci.zerg.kz"
+      - "traefik.frontend.rule=Host(`ci.zerg.kz`)"
     ports:
       - "80"
       - "443"
