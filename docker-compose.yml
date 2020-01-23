@@ -19,7 +19,7 @@ services:
     restart: always
     labels:
       - "traefik.enable=true"
-      - "traefik.frontend.rule=Host:ci.zerg.kz)"
+      - "traefik.frontend.rule=Host:ci.zerg.kz"
     ports:
       - "80"
       - "443"
