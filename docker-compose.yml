@@ -34,6 +34,7 @@ services:
       DRONE_RPC_SECRET: "8e70404c3f68f1dd3a999b297b778797"
       DRONE_SERVER_HOST: "ci.zerg.kz"
       DRONE_SERVER_PROTO: "http"
+      DRONE_USER_FILTER: "anuar45"
       
   whoami:
     image: containous/whoami
