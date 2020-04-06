@@ -7,7 +7,7 @@ services:
       - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedByDefault=false"
-      - "--providers.docker.defaultRule=Host(`{{.Name}}.zerg.kz`)"
+      - "--providers.docker.defaultRule=Host(`{{.Name}}.sre.kz`)"
     restart: always
     ports:
       - "80:80"
@@ -20,7 +20,7 @@ services:
     restart: always
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.ci.rule=Host(`ci.zerg.kz`)"
+      - "traefik.http.routers.ci.rule=Host(`ci.sre.kz`)"
     ports:
       - "80"
       - "443"
@@ -32,7 +32,7 @@ services:
       DRONE_GITHUB_CLIENT_ID:
       DRONE_GITHUB_CLIENT_SECRET:
       DRONE_RPC_SECRET: "8e70404c3f68f1dd3a999b297b778797"
-      DRONE_SERVER_HOST: "ci.zerg.kz"
+      DRONE_SERVER_HOST: "ci.sre.kz"
       DRONE_SERVER_PROTO: "http"
       DRONE_USER_FILTER: "anuar45"
       
@@ -40,4 +40,4 @@ services:
     image: containous/whoami
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`whoami.zerg.kz`)"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.sre.kz`)"
