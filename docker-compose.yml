@@ -31,7 +31,7 @@ services:
       DRONE_GITHUB_SERVER: "https://github.com"
       DRONE_GITHUB_CLIENT_ID:
       DRONE_GITHUB_CLIENT_SECRET:
-      DRONE_RPC_SECRET: "8e70404c3f68f1dd3a999b297b778797"
+      DRONE_RPC_SECRET:
       DRONE_SERVER_HOST: "ci.sre.kz"
       DRONE_SERVER_PROTO: "http"
       DRONE_USER_FILTER: "anuar45"
