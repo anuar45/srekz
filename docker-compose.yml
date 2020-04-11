@@ -7,7 +7,6 @@ services:
       - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedByDefault=false"
-      - "--providers.docker.defaultRule=Host(`{{.Name}}.sre.kz`)"
     restart: always
     ports:
       - "80:80"
@@ -17,11 +16,12 @@ services:
 
   watchtower:
     image: containrrr/watchtower
+    command:
+      - "--debug"
+      - "--interval 30"
+      - "--label-enable"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: 
-      - "--interval 60"
-      - "--label-enable"
 
   gocharts:
     image: anuar45/gocharts:latest
