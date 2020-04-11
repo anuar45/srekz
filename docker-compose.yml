@@ -16,10 +16,9 @@ services:
 
   watchtower:
     image: containrrr/watchtower
-    command:
-      - "--debug"
-      - "--interval 30"
-      - "--label-enable"
+    command: 
+      - --interval 60 
+      - --label-enable
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
