@@ -16,9 +16,9 @@ services:
 
   watchtower:
     image: containrrr/watchtower
-    command: 
-      - --interval 60 
-      - --label-enable
+    command:
+      - "--interval=60"
+      - "--label-enable"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
@@ -29,7 +29,7 @@ services:
       GITHUB_TOKEN:
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`gocharts.sre.kz`)"
+      - "traefik.http.routers.gocharts.rule=Host(`gocharts.sre.kz`)"
       - "com.centurylinklabs.watchtower.enable=true"
 
   whoami:
