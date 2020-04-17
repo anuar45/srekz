@@ -22,14 +22,14 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
-  gocharts:
-    image: anuar45/gocharts:latest
+  topgomods:
+    image: anuar45/topgomods:latest
     restart: always
     environment:
       GITHUB_TOKEN:
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.gocharts.rule=Host(`gocharts.sre.kz`)"
+      - "traefik.http.routers.topgomods.rule=Host(`topgomods.sre.kz`)"
       - "com.centurylinklabs.watchtower.enable=true"
 
   whoami:
