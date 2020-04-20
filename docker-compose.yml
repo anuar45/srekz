@@ -57,3 +57,7 @@ services:
       - traefik.http.routers.whoami.tls=true
       - traefik.http.routers.whoami.tls.certresolver=le
       - com.centurylinklabs.watchtower.enable=true
+
+networks:
+  web:
+      external: true
