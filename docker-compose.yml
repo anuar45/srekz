@@ -1,5 +1,9 @@
 version: '3'
 
+# Requirements
+# traefik: Create ./acme.json file with chmod 600 for lets encrypt
+# topgomods: Setup GIHUB_TOKEN env var
+
 services:
   traefik:
     image: traefik:v2.0
