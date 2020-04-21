@@ -56,6 +56,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.topgomods.rule=Host(`topgomods.sre.kz`)
+      - traefik.http.routers.topgomods.entrypoints=websecure
       - traefik.http.routers.topgomods.tls=true
       - traefik.http.routers.topgomods.tls.certresolver=le
       - com.centurylinklabs.watchtower.enable=true
@@ -67,6 +68,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.whoami.rule=Host(`whoami.sre.kz`)
+      - traefik.http.routers.whoami.entrypoints=websecure
       - traefik.http.routers.whoami.tls=true
       - traefik.http.routers.whoami.tls.certresolver=le
       - com.centurylinklabs.watchtower.enable=true
