@@ -72,6 +72,8 @@ services:
       - traefik.http.routers.whoami.tls=true
       - traefik.http.routers.whoami.tls.certresolver=le
       - com.centurylinklabs.watchtower.enable=true
+      - traefik.http.middlewares.whoami-redirectscheme.redirectscheme.scheme=https
+      - traefik.http.middlewares.whoami-redirectscheme.redirectscheme.permanent=true
 
 networks:
   web:
