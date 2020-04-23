@@ -57,6 +57,41 @@ services:
       - traefik.http.routers.topgomods.middlewares=topgomods-redirectscheme
       - com.centurylinklabs.watchtower.enable=true
 
+  about:
+    image: anuar45/about:latest
+    restart: unless-stopped
+    networks:
+      - web
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.about.rule=Host(`sre.kz`,`www.sre.kz`)
+      - traefik.http.routers.about.entrypoints=web
+      - traefik.http.routers.about-secure.rule=Host(`sre.kz`,`www.sre.kz`)
+      - traefik.http.routers.about-secure.entrypoints=websecure
+      - traefik.http.routers.about-secure.tls=true
+      - traefik.http.routers.about-secure.tls.certresolver=le
+      - traefik.http.middlewares.about-redirectscheme.redirectscheme.scheme=https
+      - traefik.http.middlewares.about-redirectscheme.redirectscheme.permanent=true
+      - traefik.http.routers.about.middlewares=about-redirectscheme
+      - com.centurylinklabs.watchtower.enable=true
+
+  whoami:
+    image: containous/whoami
+    restart: unless-stopped
+    networks:
+      - web
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.whoami.rule=Host(`whoami.sre.kz`)
+      - traefik.http.routers.whoami.entrypoints=web
+      - traefik.http.routers.whoami-secure.rule=Host(`whoami.sre.kz`)
+      - traefik.http.routers.whoami-secure.entrypoints=websecure
+      - traefik.http.routers.whoami-secure.tls=true
+      - traefik.http.routers.whoami-secure.tls.certresolver=le
+      - traefik.http.middlewares.whoami-redirectscheme.redirectscheme.scheme=https
+      - traefik.http.middlewares.whoami-redirectscheme.redirectscheme.permanent=true
+      - traefik.http.routers.whoami.middlewares=whoami-redirectscheme
+      - com.centurylinklabs.watchtower.enable=true
   whoami:
     image: containous/whoami
     restart: unless-stopped
