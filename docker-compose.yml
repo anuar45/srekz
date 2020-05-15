@@ -4,6 +4,11 @@ version: '3'
 # traefik: Create ./acme.json file with chmod 600 for lets encrypt
 # topgomods: Setup GIHUB_TOKEN env var
 
+networks:
+  web:
+    external: true
+  loki:
+
 services:
   traefik:
     image: traefik:v2.2.0
@@ -29,6 +34,39 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./acme.json:/acme.json
   
+  loki:
+    image: grafana/loki:1.4.1
+    restart: unless-stopped
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+
+  promtail:
+    image: grafana/promtail:1.4.1
+    restart: unless-stopped
+    volumes:
+      - /var/log:/var/log
+    command: -config.file=/etc/promtail/docker-config.yaml
+
+  grafana:
+    image: grafana/grafana:6.7.3
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    networks:
+      - web
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.grafana.rule=Host(`grafana.sre.kz`)
+      - traefik.http.routers.grafana.entrypoints=web
+      - traefik.http.routers.grafana-secure.rule=Host(`grafana.sre.kz`)
+      - traefik.http.routers.grafana-secure.entrypoints=websecure
+      - traefik.http.routers.grafana-secure.tls=true
+      - traefik.http.routers.grafana-secure.tls.certresolver=le
+      - traefik.http.middlewares.grafana-redirectscheme.redirectscheme.scheme=https
+      - traefik.http.middlewares.grafana-redirectscheme.redirectscheme.permanent=true
+      - traefik.http.routers.grafana.middlewares=grafana-redirectscheme
+
   watchtower:
     image: containrrr/watchtower
     command:
@@ -92,24 +130,4 @@ services:
       - traefik.http.middlewares.whoami-redirectscheme.redirectscheme.permanent=true
       - traefik.http.routers.whoami.middlewares=whoami-redirectscheme
       - com.centurylinklabs.watchtower.enable=true
-  whoami:
-    image: containous/whoami
-    restart: unless-stopped
-    networks:
-      - web
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.whoami.rule=Host(`whoami.sre.kz`)
-      - traefik.http.routers.whoami.entrypoints=web
-      - traefik.http.routers.whoami-secure.rule=Host(`whoami.sre.kz`)
-      - traefik.http.routers.whoami-secure.entrypoints=websecure
-      - traefik.http.routers.whoami-secure.tls=true
-      - traefik.http.routers.whoami-secure.tls.certresolver=le
-      - traefik.http.middlewares.whoami-redirectscheme.redirectscheme.scheme=https
-      - traefik.http.middlewares.whoami-redirectscheme.redirectscheme.permanent=true
-      - traefik.http.routers.whoami.middlewares=whoami-redirectscheme
-      - com.centurylinklabs.watchtower.enable=true
 
-networks:
-  web:
-    external: true
