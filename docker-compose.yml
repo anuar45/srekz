@@ -7,6 +7,7 @@ version: '3'
 networks:
   web:
     external: true
+  loki:
 
 services:
   traefik:
@@ -39,6 +40,8 @@ services:
     ports:
       - "3100:3100"
     command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - loki
 
   promtail:
     image: grafana/promtail:1.4.1
@@ -46,6 +49,8 @@ services:
     volumes:
       - /var/log:/var/log
     command: -config.file=/etc/promtail/docker-config.yaml
+    networks:
+      - loki
 
   grafana:
     image: grafana/grafana:6.7.3
@@ -54,6 +59,7 @@ services:
       - "3000:3000"
     networks:
       - web
+      - loki
     labels:
       - traefik.enable=true
       - traefik.http.routers.grafana.rule=Host(`grafana.sre.kz`)
