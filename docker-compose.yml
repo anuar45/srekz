@@ -13,6 +13,7 @@ services:
     image: traefik:v2.2.0
     command:
       # - "--api.insecure=true"
+      - "--dashboard=false"
       - "--providers.docker=true"
       - "--providers.docker.exposedByDefault=false"
       - "--entryPoints.web.address=:80"
@@ -26,7 +27,6 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      - "8080:8080"
     networks:
       - web
     volumes:
