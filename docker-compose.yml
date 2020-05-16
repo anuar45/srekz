@@ -14,7 +14,8 @@ services:
     image: traefik:v2.2.0
     command:
       # - "--api.insecure=true"
-      - "--dashboard=false"
+      - "--accesslog=true"
+      - "--api.dashboard=false"
       - "--providers.docker=true"
       - "--providers.docker.exposedByDefault=false"
       - "--entryPoints.web.address=:80"
@@ -37,8 +38,8 @@ services:
       driver: loki
       options:
         loki-url: "http://localhost:3100/loki/api/v1/push"
-        loki-retries: 5
-        loki-batch-size: 400
+        loki-retries: "5"
+        loki-batch-size: "400"
   
   loki:
     image: grafana/loki:1.4.1
@@ -48,6 +49,7 @@ services:
     command: -config.file=/etc/loki/local-config.yaml
     networks:
       - loki
+      - web
 
   promtail:
     image: grafana/promtail:1.4.1
@@ -65,7 +67,8 @@ services:
       - "3000:3000"
     networks:
       - web
-      - loki
+    volumes:
+      - ./grafana:/var/lib/grafana
     labels:
       - traefik.enable=true
       - traefik.http.routers.grafana.rule=Host(`grafana.sre.kz`)
@@ -77,6 +80,12 @@ services:
       - traefik.http.middlewares.grafana-redirectscheme.redirectscheme.scheme=https
       - traefik.http.middlewares.grafana-redirectscheme.redirectscheme.permanent=true
       - traefik.http.routers.grafana.middlewares=grafana-redirectscheme
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://localhost:3100/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"
 
   watchtower:
     image: containrrr/watchtower
@@ -85,6 +94,12 @@ services:
       - "--label-enable"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://localhost:3100/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"
 
   topgomods:
     image: anuar45/topgomods:latest
@@ -105,6 +120,12 @@ services:
       - traefik.http.middlewares.topgomods-redirectscheme.redirectscheme.permanent=true
       - traefik.http.routers.topgomods.middlewares=topgomods-redirectscheme
       - com.centurylinklabs.watchtower.enable=true
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://localhost:3100/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"
 
   about:
     image: anuar45/about:latest
@@ -123,6 +144,12 @@ services:
       - traefik.http.middlewares.about-redirectscheme.redirectscheme.permanent=true
       - traefik.http.routers.about.middlewares=about-redirectscheme
       - com.centurylinklabs.watchtower.enable=true
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://localhost:3100/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"
 
   whoami:
     image: containous/whoami
@@ -141,4 +168,10 @@ services:
       - traefik.http.middlewares.whoami-redirectscheme.redirectscheme.permanent=true
       - traefik.http.routers.whoami.middlewares=whoami-redirectscheme
       - com.centurylinklabs.watchtower.enable=true
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://localhost:3100/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"
 
