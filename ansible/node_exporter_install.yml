@@ -1,0 +1,77 @@
+
+---
+- name: Install prometheus node_exporter
+  become: yes
+  hosts: all
+  vars:
+    node_exporter_version: "0.18.1"
+  tasks:
+
+    - name: Create the node_exporter group
+      group:
+        name: "node_exporter"
+        state: present
+        system: true
+
+    - name: Create the node_exporter user
+      user:
+        name: "node_exporter"
+        groups: "node_exporter"
+        append: true
+        shell: /usr/sbin/nologin
+        system: true
+        create_home: false
+        home: /
+
+    - name: Download node_exporter binary to local folder
+      become: false
+      get_url:
+        url: "https://github.com/prometheus/node_exporter/releases/download/v{{ node_exporter_version }}/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz"
+        dest: "/tmp/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz"
+
+    - name: Unpack node_exporter binary
+      become: false
+      unarchive:
+        src: "/tmp/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz"
+        dest: "/tmp"
+        creates: "/tmp/node_exporter-{{ node_exporter_version }}.linux-amd64/node_exporter"
+        remote_src: yes
+
+    - name: Propagate node_exporter binaries
+      copy:
+        src: "/tmp/node_exporter-{{ node_exporter_version }}.linux-amd64/node_exporter"
+        dest: "/usr/bin/node_exporter"
+        mode: 0755
+        owner: root
+        group: root
+        remote_src: yes
+
+    - name: Copy the Node Exporter systemd service file
+      copy:
+        src: node_exporter.service
+        dest: /etc/systemd/system/node_exporter.service
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: Ensure Node Exporter is enabled on boot
+      systemd:
+        daemon_reload: true
+        name: node_exporter
+        enabled: true
+        state: started
+    
+    - name: Allow 9100 port on firewalld
+      firewalld:
+        port: 9100/tcp
+        permanent: yes
+        state: enabled
+        immediate: yes
+      when: ansible_facts['os_family'] == 'RedHat'
+
+    - name: Allow 9100 port on ufw
+      ufw:
+        rule: allow
+        port: 9100
+        proto: tcp
+      when: ansible_facts['os_family'] == 'Debian'

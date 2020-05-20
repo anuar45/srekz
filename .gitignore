@@ -1,3 +1,4 @@
 acme.json
 
-/grafana
+grafana/
+.vagrant/
