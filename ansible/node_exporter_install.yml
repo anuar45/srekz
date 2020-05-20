@@ -72,6 +72,6 @@
     - name: Allow 9100 port on ufw
       ufw:
         rule: allow
-        port: 9100
+        port: "9100"
         proto: tcp
       when: ansible_facts['os_family'] == 'Debian'
