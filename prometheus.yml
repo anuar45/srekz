@@ -1,6 +1,5 @@
 global:
-  scrape_interval:     10s
-  evaluation_interval: 10s
+  scrape_interval: 1m
 
 rule_files:
   # - "first.rules"
